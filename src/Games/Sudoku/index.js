@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { withStyles, AppBar, Toolbar, Typography, IconButton, Menu, MenuItem, Card, CardActions, Button, CardContent } from 'material-ui-next';
-import MoreVertIcon from 'material-ui-icons-next/MoreVert'
-import ArrowBackIcon from 'material-ui-icons-next/ArrowBack';
+import { withStyles, Grid, Card, CardHeader, CardActions, Button, CardContent } from 'material-ui-next';
 
 import './index.css';
 import Board from './Board';
@@ -47,45 +45,10 @@ class Sodoku extends Component {
         const open = Boolean(anchorEl);
 
         return (
-            <div className={classes.root}>
-                <AppBar position="static">
-                    <Toolbar>
-                        <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-                            <ArrowBackIcon />
-                        </IconButton>
-                        <Typography variant="title" color="inherit" className={classes.flex}>
-                            Sodoku
-                        </Typography>
-                        <div>
-                            <IconButton
-                                aria-owns={open ? 'menu-appbar' : null}
-                                aria-haspopup="true"
-                                onClick={this.handleMenu}
-                                color="inherit"
-                            >
-                                <MoreVertIcon />
-                            </IconButton>
-                            <Menu
-                                id="menu-appbar"
-                                anchorEl={anchorEl}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={open}
-                                onClose={this.handleClose}
-                            >
-                                <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                                <MenuItem onClick={this.handleClose}>My account</MenuItem>
-                            </Menu>
-                        </div>                        
-                    </Toolbar>
-                </AppBar>
-                <Card className="board">
+            <Grid container justify="center" className="sudoku">
+                <Grid item>
+                <Card>
+                    <CardHeader title="Sudoku" />
                     <CardContent>
                         <Board
                             boardState = {this.state.boardState}
@@ -100,7 +63,8 @@ class Sodoku extends Component {
                         <Button variant="raised">Solve Game</Button>
                     </CardActions>
                 </Card>
-            </div>
+                </Grid>
+            </Grid>
         );
     }
 

@@ -38,9 +38,11 @@ export default class Board extends Component {
     render() {
         const board = this.generateBoard();
         return (
-            <table><tbody>
-                {board}
-            </tbody></table>
+            <table className="board">
+                <tbody>
+                    {board}
+                </tbody>
+            </table>
         );
     }
 }

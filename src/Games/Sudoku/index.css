@@ -1,43 +1,39 @@
 
-.board {
-    margin: 20px auto;
-    min-width: 300px;
-    max-width: 800px;
-}
 
-.board table {
+.sudoku table.board {
     margin: 0 auto;
     border-collapse: collapse;
+    border: 2px solid grey;
 }
 
-.board tr:nth-child(3n+4) .square {
-  border-top: 2px solid #000;
+.sudoku table.board tr:nth-child(3n+4) .square {
+  border-top: 2px solid grey;
 }
 
-.board td:nth-child(3n+4) .square {
-  border-left: 2px solid #000;
+.sudoku table.board td:nth-child(3n+4) .square {
+  border-left: 2px solid grey;
 }
 
-td {
+.sudoku table td {
 	margin: 0;
 	padding:0;
 }
 
-.square {
+.sudoku table .square {
 	box-sizing: border-box;
-	border: 0.5px solid black;
+	border: 0.5px solid #ddd;
 	padding: 0;
 	margin: 0;
 	height: 40px;
 	width: 40px;
 	text-align: center;
     font-size: 20px;
-    background-color: #ededed;
+    background-color: #f3f3f3;
     cursor: default;
     
     /* hack to hide the blinking cursor */
     color:transparent;
-    text-shadow: 0 0 0 #000;
+    text-shadow: 0 0 0 #404040;
 
     /* force select all */
     -webkit-user-select: all;  /* Chrome 49+ */
@@ -45,15 +41,15 @@ td {
     -ms-user-select: all;      /* No support yet */
     user-select: all;          /* Likely future */   
 }
-.square.valid {
-    text-shadow: 0 0 0  green;
+.sudoku table .square.valid {
+    text-shadow: 0 0 0  #690;
 }
-.square.invalid {
-    text-shadow: 0 0 0 red;
+.sudoku table .square.invalid {
+    text-shadow: 0 0 0 #900;
 }
-.square:focus {
+.sudoku table .square:focus {
     outline: none;
-    background-color: #aaa;
+    background-color: #ccc;
 }
-.square::selection { background: transparent; }
-.square::-moz-selection { background: transparent; }
+.sudoku table .square::selection { background: transparent; }
+.sudoku table .square::-moz-selection { background: transparent; }
