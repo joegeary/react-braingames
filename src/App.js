@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-import Sodoku from './Games/Sodoku';
+import Sudoku from './Games/Sudoku';
 
 class App extends Component {
   render() {
     return (
-      <Sodoku />
+      <Sudoku />
     );
   }
 }
