@@ -33,17 +33,15 @@ class Sodoku extends Component {
     constructor(props) {
         super(props);
 
+        const seed = Math.floor(Math.random() * this.puzzles.length);
+        
         this.state = {
-            anchorEl: null,
-            boardState: this.generatePuzzle()
+            seed: seed,
+            boardState: this.generatePuzzle(seed)
         };
     }
 
     render() {
-        const { classes } = this.props;
-        const { anchorEl } = this.state;
-        const open = Boolean(anchorEl);
-
         return (
             <Grid container justify="center" className="sudoku">
                 <Grid item>
@@ -56,8 +54,8 @@ class Sodoku extends Component {
                         />
                     </CardContent>
                     <CardActions>
-                        <Button variant="raised" onClick={this.newGame}>New Game</Button>
-                        <Button variant="raised">Restart Game</Button>
+                        <Button variant="raised" onClick={this.handleNewGame}>New Game</Button>
+                        <Button variant="raised" onClick={this.handleRestart}>Restart Game</Button>
                         <Button variant="raised" disabled >Undo Move</Button>
                         <Button variant="raised" disabled >Redo Move</Button>
                         <Button variant="raised">Solve Game</Button>
@@ -68,29 +66,33 @@ class Sodoku extends Component {
         );
     }
 
-    handleMenu = event => {
-        this.setState({ anchorEl: event.currentTarget });
-    };
-
-    handleClose = () => {
-        this.setState({ anchorEl: null });
-    };
-
-    newGame = () => {
+    handleNewGame = () => {
+        const seed = Math.floor(Math.random() * this.puzzles.length)
         this.setState((prevState) => {
             return {
-                boardState: this.generatePuzzle()
+                seed: seed,
+                boardState: this.generatePuzzle(seed)
             };
         });
     }
 
-    generatePuzzle() {
-        var puzzle = this.puzzles[Math.floor(Math.random() * this.puzzles.length)];
-        var boardState = this.createMatrix(9, 9);
+    handleRestart = () => {
+        const seed = this.state.seed;
+        this.setState((prevState) => {
+            return {
+                seed: seed,
+                boardState: this.generatePuzzle(seed)
+            };
+        });
+    }
+
+    generatePuzzle(seed) {
+        const puzzle = this.puzzles[seed];
+        const boardState = this.createMatrix(9, 9);
 
         for (let i = 0; i < puzzle.length; i++) {
-            var row = Math.floor(i / 9);
-            var col = i % 9;
+            const row = Math.floor(i / 9);
+            const col = i % 9;
 
             boardState[row][col] = {
                 value: puzzle[i],
