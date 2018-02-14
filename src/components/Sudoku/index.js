@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { withStyles, Grid, Card, CardHeader, CardActions, Button, CardContent } from 'material-ui-next';
 
 import './index.css';
@@ -19,26 +20,9 @@ const styles = {
 
 class Sodoku extends Component {
     
-    puzzles = [
-        "290500007700000400004738012902003064800050070500067200309004005000080700087005109",
-        "080020000040500320020309046600090004000640501134050700360004002407230600000700450",
-        "608730000200000460000064820080005701900618004031000080860200039050000100100456200",
-        "902040560000009000061250470040030102600480090003070080500008000306500947100360005",
-        "020001630090500400806049002900005701000900300352076800009004506080050000045600018",
-        "034060901700012680080009000023050790007020005500078030010590000000000413078130020",
-        "020604030450100206600005100004003000095201380200500907510000603807352000000000058",
-        "032054900090001004080700031005600027800070000270140005000210300018907652603000000"
-    ]
 
     constructor(props) {
         super(props);
-
-        const seed = Math.floor(Math.random() * this.puzzles.length);
-        
-        this.state = {
-            seed: seed,
-            boardState: this.generatePuzzle(seed)
-        };
     }
 
     render() {
@@ -49,7 +33,7 @@ class Sodoku extends Component {
                     <CardHeader title="Sudoku" />
                     <CardContent>
                         <Board
-                            boardState = {this.state.boardState}
+                            boardState = {this.props.board}
                             onValueChange = {this.onValueChange}
                         />
                     </CardContent>
@@ -159,4 +143,13 @@ class Sodoku extends Component {
     }
 }
 
-export default withStyles(styles)(Sodoku);
+const mapStateToProps = (state) => {
+    const { difficulty, board } = state;
+
+    return {
+        difficulty,
+        board
+    };
+}
+
+export default connect(mapStateToProps)(withStyles(styles)(Sodoku));
