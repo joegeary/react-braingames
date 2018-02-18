@@ -34,6 +34,11 @@ export default (state = INITIAL_STATE, action) => {
                 board: action.newBoard
             };
 
+        case SUDOKU_SOLVE_GAME:
+            return {
+                ...state,
+                board: action.newBoard
+            }
         default:
             return state;
     }

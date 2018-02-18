@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Cell from './Cell';
 
 const Board = (props) => (
@@ -8,13 +8,10 @@ const Board = (props) => (
                 <tr key={i}>
                     {row.map((cell) => (
                         <Cell 
-                            key={cell.x+''+cell.y}
-                            x={cell.x}
-                            y={cell.y}
-                            value={cell.value}
-                            editable={cell.editable}
-                            valid={cell.valid}
-                            //onValueChange={this.onValueChange}
+                            key={cell.x + '' + cell.y}
+                            cell={cell}
+                            board={props.board}
+                            onCellChange={props.onCellChange}
                         />
                     ))}
                 </tr>

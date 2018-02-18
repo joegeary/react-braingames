@@ -1,39 +1,61 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { changeSquareValue } from '../../actions/sudoku';
 
-export default class Cell extends Component {
+class Cell extends Component {
 
-    render() {
-        const value = this.props.value === '0' ? '' : this.props.value;
-        const valid = this.props.editable ? (this.props.valid ? 'valid' : 'invalid') : '';
+    constructor(props) {
+        super(props);
 
-        return (
-            <td>
-                <input 
-                    className={`square ${valid}`}
-                    type="text" 
-                    value={value} 
-                    disabled={!this.props.editable}
-                    onChange={this.handleValueChange} 
-                    onClick={this.handleInputClick}
-                />
-            </td>
-        )
+        this.onChange = this.onChange.bind(this);
+        this.onClick = this.onClick.bind(this);
     }
 
-    handleInputClick = (e) => {
+    shouldComponentUpdate(newProps) {
+         const oldCell = this.props.cell;
+         const newCell = newProps.cell;
+
+         return oldCell.value !== newCell.value || oldCell.editable !== newCell.editable;
+    }
+
+    onClick = (e) => {
         e.target.select();
     }
 
-    handleValueChange = (e) => {
-        var val = e.target.value;
+    onChange = (e) => {
+        const cell = this.props.cell;
+        const newValue = e.target.value;
 
-        if (this.isValid(val)) {
-            this.props.onValueChange(this.props.x, this.props.y, val);
+        if (!this.isValid(newValue)) {
+            e.target.value = cell.value;
+            return;
         }
+
+        this.props.changeSquareValue(cell.x, cell.y, newValue === '' ? '' : newValue, this.props.board);
+        this.onClick(e);
     }
 
     isValid = (val) => {
         return (val === '' || (val.length === 1 && !isNaN(val)));
     }
 
+    render() {
+        const cell = this.props.cell;
+        const isValid = cell.editable ? (cell.valid ? 'valid' : 'invalid') : '';
+
+        return (
+            <td>
+                <input 
+                    className={`square ${isValid}`}
+                    type="text" 
+                    value={cell.value} 
+                    disabled={!cell.editable}
+                    onClick={this.onClick}
+                    onChange={this.onChange}
+                />
+            </td>
+        )
+    }
 }
+
+export default connect(null, { changeSquareValue })(Cell);
