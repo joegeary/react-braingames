@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withStyles, AppBar, Toolbar, Typography, Grid } from 'material-ui-next';
 
-import Sudoku from './Games/Sudoku';
+import Sudoku from './components/Sudoku/index';
 
 const styles = {
   root: {
