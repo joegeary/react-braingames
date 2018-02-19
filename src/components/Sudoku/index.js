@@ -4,6 +4,7 @@ import { withStyles, Grid, Card, CardHeader, CardActions, Button, CardContent } 
 
 import './index.css';
 import Board from './Board';
+import Options from './Options';
 import { newGame, solveGame, restartGame } from '../../actions/sudoku';
 
 const styles = {
@@ -48,7 +49,7 @@ class Sodoku extends Component {
             <Grid container justify="center" className="sudoku">
                 <Grid item>
                 <Card>
-                    <CardHeader title="Sudoku" />
+                    <CardHeader title="Sudoku" subheader="Fill a 9×9 grid with numbers so that each row, column and 3×3 section contain all of the digits between 1 and 9." action={<Options />}/>
                     <CardContent>
                         <Board
                             board = {this.props.board}

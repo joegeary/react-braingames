@@ -36,11 +36,11 @@ class Cell extends Component {
     }
 
     isValid = (val) => {
-        return (val === '' || (val.length === 1 && !isNaN(val)));
+        return (val === '' || /[1-9]/.test(val));
     }
 
     render() {
-        const cell = this.props.cell;
+        const { cell } = this.props;
         const isValid = cell.editable ? (cell.valid ? 'valid' : 'invalid') : '';
 
         return (

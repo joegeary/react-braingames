@@ -3,10 +3,7 @@ import { chunk } from 'lodash';
 import { EASY, MEDIUM, HARD } from '../components/Sudoku/games';
 import {
     SUDOKU_NEW_GAME,
-    SUDOKU_RESET_GAME,
     SUDOKU_SOLVE_GAME,
-    SUDOKU_UNDO,
-    SUDOKU_REDO,
     SUDOKU_SQUARE_CHANGE
 } from '../constants/actions';
 
@@ -177,13 +174,13 @@ const findNextEmptyCell = (board) => {
 const findLegalValues = (board, cell) => {
     let legalNums = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-    for (var x = 0; x < board.length; x++) {
-        legalNums = legalNums.filter(n => n !== board[x][cell.y].value);        
-    }
+    board.forEach(row => {
+        legalNums = legalNums.filter(n => n !== row[cell.y].value);
+    });
 
-    for (var y = 0; y < board[cell.x].length; y++) {
-        legalNums = legalNums.filter(n => n !== board[cell.x][y].value);
-    }
+    board[cell.x].forEach(col => {
+        legalNums = legalNums.filter(n => n !== col.value);
+    })
 
     const squareX = Math.floor(cell.x / 3);
     const squareY = Math.floor(cell.y / 3);
