@@ -47,7 +47,7 @@ class Options extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const { difficulty } = state.sudoku;
+    const { difficulty } = state.sudoku.present;
 
     return {
         difficulty

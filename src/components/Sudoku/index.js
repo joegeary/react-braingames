@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { ActionCreators as UndoActionCreators } from 'redux-undo'
 import { withStyles, Grid, Card, CardHeader, CardActions, Button, CardContent } from 'material-ui-next';
 
 import './index.css';
@@ -33,7 +34,8 @@ class Sodoku extends Component {
     }
 
     onNewClick() {
-        this.props.newGame('EASY');
+        //this.props.dispatch(UndoActionCreators.clearHistory());
+        this.props.newGame(this.props.difficulty);
     }
 
     onSolveClick() {
@@ -45,6 +47,8 @@ class Sodoku extends Component {
     }
 
     render() {
+        const { canUndo, canRedo, onUndo, onRedo } = this.props;
+
         return (
             <Grid container justify="center" className="sudoku">
                 <Grid item>
@@ -58,8 +62,8 @@ class Sodoku extends Component {
                     <CardActions>
                         <Button variant="raised" onClick={this.onNewClick}>New Game</Button>
                         <Button variant="raised" onClick={this.onRestartClick}>Restart Game</Button>
-                        <Button variant="raised" disabled >Undo Move</Button>
-                        <Button variant="raised" disabled >Redo Move</Button>
+                        <Button variant="raised" onClick={onUndo} disabled={!canUndo}>Undo Move</Button>
+                        <Button variant="raised" onClick={onRedo} disabled={!canRedo}>Redo Move</Button>
                         <Button variant="raised" onClick={this.onSolveClick}>Solve Game</Button>
                     </CardActions>
                 </Card>
@@ -70,12 +74,24 @@ class Sodoku extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const { difficulty, board } = state.sudoku;
+    const { difficulty, board } = state.sudoku.present;
 
     return {
         difficulty,
-        board
+        board,
+        canUndo: state.sudoku.past.length > 0,
+        canRedo: state.sudoku.future.length > 0
     };
 }
 
-export default connect(mapStateToProps, { newGame, solveGame, restartGame })(withStyles(styles)(Sodoku));
+const mapDispatchToProps = (dispatch) => {
+    return { 
+        newGame(difficulty) { dispatch(newGame(difficulty)); }, 
+        solveGame(board) { dispatch(solveGame(board)); }, 
+        restartGame(board) { dispatch(restartGame(board)); },
+        onUndo: () => dispatch(UndoActionCreators.undo()),
+        onRedo: () => dispatch(UndoActionCreators.redo())
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Sodoku));
