@@ -3,7 +3,9 @@ import undoable, { includeAction } from 'redux-undo';
 import {
     SUDOKU_NEW_GAME,
     SUDOKU_SOLVE_GAME,
-    SUDOKU_SQUARE_CHANGE
+    SUDOKU_SQUARE_CHANGE, 
+    SUDOKU_UNDO,
+    SUDOKU_REDO
 } from '../constants/actions';
 
 const INITIAL_STATE = {
@@ -36,4 +38,8 @@ const sudoku = (state = INITIAL_STATE, action) => {
     }
 }
 
-export default undoable(sudoku, { filter: includeAction([SUDOKU_SQUARE_CHANGE, SUDOKU_SOLVE_GAME]) });
+export default undoable(sudoku, { 
+    filter: includeAction([SUDOKU_SQUARE_CHANGE, SUDOKU_NEW_GAME, SUDOKU_SOLVE_GAME]), 
+    undoType: SUDOKU_UNDO, 
+    redoType: SUDOKU_REDO
+});
