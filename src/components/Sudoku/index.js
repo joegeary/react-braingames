@@ -1,27 +1,33 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ActionCreators as UndoActionCreators } from 'redux-undo'
-import { withStyles, Grid, Card, CardHeader, CardActions, Button, CardContent } from 'material-ui-next';
+import { Link } from 'react-router-dom';
+import { withStyles, IconButton, Button, Paper, Menu, MenuItem } from 'material-ui-next';
+import ArrowBackIcon from 'material-ui-icons-next/ArrowBack';
+import MoreVertIcon from 'material-ui-icons-next/MoreVert';
+
+import ViewContainer from '../layout/ViewContainer';
+import LayoutAppBar from '../layout/LayoutAppBar';
+import LayoutBody from '../layout/LayoutBody';
 
 import './index.css';
 import Board from './Board';
-import Options from './Options';
-import { newGame, solveGame, restartGame } from '../../actions/sudoku';
+import { newGame, solveGame, restartGame, undoMove, redoMove } from '../../actions/sudoku';
 
 const styles = {
-    root: {
-        width: '100%',
+    board: {
+        paddingTop: '20px'
     },
-    flex: {
-        flex: 1,
-    },
-    menuButton: {
-        marginLeft: -12,
-        marginRight: 20,
-    },
+    buttons: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: '20px'
+    }
 };
 
 class Sodoku extends Component {
+    state = {
+        anchorEl: null
+    };
 
     constructor(props) {
         super(props);
@@ -29,46 +35,108 @@ class Sodoku extends Component {
         this.onNewClick = this.onNewClick.bind(this);
         this.onSolveClick = this.onSolveClick.bind(this);
         this.onRestartClick = this.onRestartClick.bind(this);
-
-        this.onNewClick();
+        this.onUndoClick = this.onUndoClick.bind(this);
+        this.onRedoClick = this.onRedoClick.bind(this);
     }
 
+    componentDidMount() {
+        this.onNewClick();
+    };
+
+    handleMenuClose = () => {
+        this.setState({
+            anchorEl: null
+        });
+    };
+
+    handleOptionsMenu = (e) => {
+        this.setState({
+            anchorEl: e.currentTarget
+        });
+    };
+
     onNewClick() {
-        //this.props.dispatch(UndoActionCreators.clearHistory());
         this.props.newGame(this.props.difficulty);
+        this.handleMenuClose();
     }
 
     onSolveClick() {
         this.props.solveGame(this.props.board);
+        this.handleMenuClose();
     }
 
     onRestartClick() {
         this.props.restartGame(this.props.board);
+        this.handleMenuClose();
+    }
+
+    onUndoClick() {
+        this.props.undoMove();
+    }
+
+    onRedoClick() {
+        this.props.redoMove();
     }
 
     render() {
-        const { canUndo, canRedo, onUndo, onRedo } = this.props;
+        const { classes, canUndo, canRedo } = this.props;
+        const { anchorEl } = this.state;
+        const open = Boolean(anchorEl);
+
+        const appBarLeft = (
+            <IconButton component={Link} to="/">
+                <ArrowBackIcon />
+            </IconButton>
+        );
+
+        const appBarRight = (
+            <div>
+                <IconButton
+                    aria-owns={open ? 'menu-options' : null}
+                    aria-haspopup="true"
+                    onClick={this.handleOptionsMenu}
+                    color="inherit"
+                >
+                    <MoreVertIcon />
+                </IconButton>
+                <Menu
+                    id="menu-options"
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    open={open}
+                    onClose={this.handleMenuClose}
+                >
+                    <MenuItem onClick={this.onNewClick}>New Game</MenuItem>
+                    <MenuItem onClick={this.onRestartClick}>Restart Game</MenuItem>
+                    <MenuItem onClick={this.onSolveClick}>Solve Game</MenuItem>
+                </Menu>
+            </div>
+        );
 
         return (
-            <Grid container justify="center" className="sudoku">
-                <Grid item>
-                <Card>
-                    <CardHeader title="Sudoku" subheader="Fill a 9×9 grid with numbers so that each row, column and 3×3 section contain all of the digits between 1 and 9." action={<Options />}/>
-                    <CardContent>
-                        <Board
-                            board = {this.props.board}
-                        />
-                    </CardContent>
-                    <CardActions>
-                        <Button variant="raised" onClick={this.onNewClick}>New Game</Button>
-                        <Button variant="raised" onClick={this.onRestartClick}>Restart Game</Button>
-                        <Button variant="raised" onClick={onUndo} disabled={!canUndo}>Undo Move</Button>
-                        <Button variant="raised" onClick={onRedo} disabled={!canRedo}>Redo Move</Button>
-                        <Button variant="raised" onClick={this.onSolveClick}>Solve Game</Button>
-                    </CardActions>
-                </Card>
-                </Grid>
-            </Grid>
+            <ViewContainer>
+                <LayoutAppBar
+                    title="Sudoku"
+                    iconElementLeft={appBarLeft}
+                    iconElementRight={appBarRight}
+                />
+                <LayoutBody className="sudoku">
+                    <Paper square className={classes.board} >
+                        <Board board={this.props.board} />
+                        <div className={classes.buttons}>
+                            <Button onClick={this.onUndoClick} disabled={!canUndo}>Undo Move</Button>
+                            <Button onClick={this.onRedoClick} disabled={!canRedo}>Redo Move</Button>
+                        </div>
+                    </Paper>
+                </LayoutBody>
+            </ViewContainer>
         );
     }
 }
@@ -84,14 +152,10 @@ const mapStateToProps = (state) => {
     };
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return { 
-        newGame(difficulty) { dispatch(newGame(difficulty)); }, 
-        solveGame(board) { dispatch(solveGame(board)); }, 
-        restartGame(board) { dispatch(restartGame(board)); },
-        onUndo: () => dispatch(UndoActionCreators.undo()),
-        onRedo: () => dispatch(UndoActionCreators.redo())
-    };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Sodoku));
+export default connect(mapStateToProps, { 
+    newGame, 
+    solveGame, 
+    restartGame,
+    undoMove,
+    redoMove
+})(withStyles(styles)(Sodoku));

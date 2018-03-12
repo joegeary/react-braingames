@@ -1,10 +1,12 @@
 import { chunk } from 'lodash';
 
-import { EASY, MEDIUM, HARD } from '../components/Sudoku/games';
+import { EASY, MEDIUM, HARD } from '../components/sudoku/games';
 import {
     SUDOKU_NEW_GAME,
     SUDOKU_SOLVE_GAME,
-    SUDOKU_SQUARE_CHANGE
+    SUDOKU_SQUARE_CHANGE,
+    SUDOKU_UNDO,
+    SUDOKU_REDO
 } from '../constants/actions';
 
 export const newGame = (difficulty) => {
@@ -64,6 +66,21 @@ export const changeSquareValue = (x, y, value, board) => {
         newBoard
     };
 }
+
+export const undoMove = () => {
+    return {
+        type: SUDOKU_UNDO
+    };
+}
+
+export const redoMove = () => {
+    return {
+        type: SUDOKU_REDO
+    };
+}
+
+
+
 
 // find a better place to put these
 const generateBoard = (difficulty) => {
