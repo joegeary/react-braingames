@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { withStyles, IconButton, Button, Paper, Menu, MenuItem } from 'material-ui-next';
-import CloseIcon from 'material-ui-icons-next/Close';
+import ArrowBackIcon from 'material-ui-icons-next/ArrowBack';
 import MoreVertIcon from 'material-ui-icons-next/MoreVert';
 
 import ViewContainer from '../layout/ViewContainer';
@@ -85,7 +85,7 @@ class Sodoku extends Component {
 
         const appBarLeft = (
             <IconButton component={Link} to="/">
-                <CloseIcon />
+                <ArrowBackIcon />
             </IconButton>
         );
 
