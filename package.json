@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "classnames": "^2.2.5",
     "lodash": "^4.17.5",
     "material-ui-icons-next": "^1.0.0-beta.17-next",
     "material-ui-next": "^1.0.0-beta.32",

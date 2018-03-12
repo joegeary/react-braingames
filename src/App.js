@@ -1,45 +1,20 @@
 import React, { Component } from 'react';
-import { withStyles, AppBar, Toolbar, Typography, Grid } from 'material-ui-next';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import Sudoku from './components/Sudoku/index';
-
-const styles = {
-  root: {
-      flexGrow: 1
-  },
-  flex: {
-      flex: 1,
-  },
-  menuButton: {
-      marginLeft: -12,
-      marginRight: 20,
-  },
-  game: {
-      marginTop: 30
-  }
-};
+import GameList from './components/GameList';
+import Sudoku from './components/sudoku/index';
 
 class App extends Component {
-  render() {
-    const { classes } = this.props;
+    render() {
+        return (
+            <BrowserRouter>
+                <Switch>
+                    <Route exact path="/" component={GameList} />
+                    <Route exact path="/sudoku" component={Sudoku} />
+                </Switch>
+            </BrowserRouter>
+        );
+    }
+};
 
-    return (
-      <div className={classes.root}>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography variant="title" color="inherit" className={classes.flex}>
-                Brain Games
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Grid container className={classes.game}>
-          <Grid item xs={12}>
-            <Sudoku />
-          </Grid>
-        </Grid>
-      </div>
-    );
-  }
-}
-
-export default withStyles(styles)(App);
+export default App;

@@ -1,6 +1,6 @@
 import { chunk } from 'lodash';
 
-import { EASY, MEDIUM, HARD } from '../components/Sudoku/games';
+import { EASY, MEDIUM, HARD } from '../components/sudoku/games';
 import {
     SUDOKU_NEW_GAME,
     SUDOKU_SOLVE_GAME,
