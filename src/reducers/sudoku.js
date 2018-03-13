@@ -1,7 +1,8 @@
 import undoable, { includeAction } from 'redux-undo';
 
 import {
-    SUDOKU_NEW_GAME,
+    SUDOKU_TOGGLE_DIFFICULTY_PANEL,
+    SUDOKU_START_GAME,
     SUDOKU_SOLVE_GAME,
     SUDOKU_SQUARE_CHANGE, 
     SUDOKU_UNDO,
@@ -10,12 +11,19 @@ import {
 
 const INITIAL_STATE = {
     difficulty: 'EASY',
+    showDifficultySelector: false,
     board: []
 };
 
 const sudoku = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case SUDOKU_NEW_GAME:
+        case SUDOKU_TOGGLE_DIFFICULTY_PANEL:
+            return {
+                ...state,
+                showDifficultySelector: !state.showDifficultySelector
+            };
+
+        case SUDOKU_START_GAME:
             return {
                 ...state,
                 difficulty: action.difficulty,
@@ -33,13 +41,14 @@ const sudoku = (state = INITIAL_STATE, action) => {
                 ...state,
                 board: action.newBoard
             }
+            
         default:
             return state;
     }
 }
 
 export default undoable(sudoku, { 
-    filter: includeAction([SUDOKU_SQUARE_CHANGE, SUDOKU_NEW_GAME, SUDOKU_SOLVE_GAME]), 
+    filter: includeAction([SUDOKU_SQUARE_CHANGE, SUDOKU_START_GAME, SUDOKU_SOLVE_GAME]), 
     undoType: SUDOKU_UNDO, 
     redoType: SUDOKU_REDO
 });

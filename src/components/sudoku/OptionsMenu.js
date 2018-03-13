@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { IconButton, Menu, MenuItem } from 'material-ui-next';
+import { Button, IconButton, Menu, MenuItem } from 'material-ui-next';
 import MoreVertIcon from 'material-ui-icons-next/MoreVert';
 
-import { newGame, solveGame, restartGame } from '../../actions/sudoku';
+import { toggleDifficultyPanel, solveGame } from '../../actions/sudoku';
 
 class OptionsMenu extends Component {
     state = {
@@ -23,17 +23,12 @@ class OptionsMenu extends Component {
     }
 
     handleNewGame = () => {
-        this.props.newGame(this.props.difficulty);
+        this.props.toggleDifficultyPanel();
         this.handleCloseMenu();
     }
 
     handleSolveGame = () => {
         this.props.solveGame(this.props.board);
-        this.handleCloseMenu();
-    }
-
-    handleRestartGame = () => {
-        this.props.restartGame(this.props.board);
         this.handleCloseMenu();
     }
 
@@ -43,6 +38,7 @@ class OptionsMenu extends Component {
 
         return (
             <div>
+                <Button onClick={this.handleNewGame}>New Game</Button>
                 <IconButton
                     aria-owns={open ? 'menu-sudoku-options' : null}
                     aria-haspopup="true"
@@ -65,8 +61,7 @@ class OptionsMenu extends Component {
                     open={open}
                     onClose={this.handleCloseMenu}
                 >
-                    <MenuItem onClick={this.handleNewGame}>New Game</MenuItem>
-                    <MenuItem onClick={this.handleRestartGame}>Restart Game</MenuItem>
+                    <MenuItem onClick={this.handleNewGame}>Help</MenuItem>
                     <MenuItem onClick={this.handleSolveGame}>Solve Game</MenuItem>
                 </Menu>
             </div>
@@ -84,7 +79,6 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, {
-    newGame, 
-    solveGame, 
-    restartGame,
+    toggleDifficultyPanel, 
+    solveGame
 })(OptionsMenu);

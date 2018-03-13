@@ -2,18 +2,25 @@ import { chunk } from 'lodash';
 
 import { EASY, MEDIUM, HARD } from '../components/sudoku/games';
 import {
-    SUDOKU_NEW_GAME,
+    SUDOKU_START_GAME,
     SUDOKU_SOLVE_GAME,
     SUDOKU_SQUARE_CHANGE,
     SUDOKU_UNDO,
-    SUDOKU_REDO
+    SUDOKU_REDO, 
+    SUDOKU_TOGGLE_DIFFICULTY_PANEL
 } from '../constants/actions';
 
-export const newGame = (difficulty) => {
+export const toggleDifficultyPanel = () => {
+    return {
+        type: SUDOKU_TOGGLE_DIFFICULTY_PANEL
+    }
+}
+
+export const startGame = (difficulty) => {
     const board = generateBoard(difficulty);
 
     return {
-        type: SUDOKU_NEW_GAME,
+        type: SUDOKU_START_GAME,
         difficulty,
         board
     };
@@ -31,7 +38,7 @@ export const restartGame = (board) => {
     });
 
     return {
-        type: SUDOKU_NEW_GAME,
+        type: SUDOKU_START_GAME,
         board: newBoard
     };
 }
