@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import GameList from './components/GameList';
-import Sudoku from './components/sudoku/index';
+import Sudoku from './components/sudoku/Sudoku';
 
 class App extends Component {
     render() {

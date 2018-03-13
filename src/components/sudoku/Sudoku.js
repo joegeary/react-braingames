@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { withStyles, IconButton, Button, Paper, Menu, MenuItem } from 'material-ui-next';
+import { withStyles, IconButton, Button, Paper } from 'material-ui-next';
 import ArrowBackIcon from 'material-ui-icons-next/ArrowBack';
-import MoreVertIcon from 'material-ui-icons-next/MoreVert';
 
 import ViewContainer from '../layout/ViewContainer';
 import LayoutAppBar from '../layout/LayoutAppBar';
 import LayoutBody from '../layout/LayoutBody';
 
-import './index.css';
+import './sudoku.css';
 import Board from './Board';
-import { newGame, solveGame, restartGame, undoMove, redoMove } from '../../actions/sudoku';
+import OptionsMenu from './OptionsMenu';
+import { newGame, undoMove, redoMove } from '../../actions/sudoku';
 
 const styles = {
     board: {
@@ -25,50 +25,17 @@ const styles = {
 };
 
 class Sodoku extends Component {
-    state = {
-        anchorEl: null
-    };
 
     constructor(props) {
         super(props);
-
-        this.onNewClick = this.onNewClick.bind(this);
-        this.onSolveClick = this.onSolveClick.bind(this);
-        this.onRestartClick = this.onRestartClick.bind(this);
+        
         this.onUndoClick = this.onUndoClick.bind(this);
         this.onRedoClick = this.onRedoClick.bind(this);
     }
 
     componentDidMount() {
-        this.onNewClick();
-    };
-
-    handleMenuClose = () => {
-        this.setState({
-            anchorEl: null
-        });
-    };
-
-    handleOptionsMenu = (e) => {
-        this.setState({
-            anchorEl: e.currentTarget
-        });
-    };
-
-    onNewClick() {
         this.props.newGame(this.props.difficulty);
-        this.handleMenuClose();
-    }
-
-    onSolveClick() {
-        this.props.solveGame(this.props.board);
-        this.handleMenuClose();
-    }
-
-    onRestartClick() {
-        this.props.restartGame(this.props.board);
-        this.handleMenuClose();
-    }
+    };
 
     onUndoClick() {
         this.props.undoMove();
@@ -80,8 +47,6 @@ class Sodoku extends Component {
 
     render() {
         const { classes, canUndo, canRedo } = this.props;
-        const { anchorEl } = this.state;
-        const open = Boolean(anchorEl);
 
         const appBarLeft = (
             <IconButton component={Link} to="/">
@@ -90,34 +55,7 @@ class Sodoku extends Component {
         );
 
         const appBarRight = (
-            <div>
-                <IconButton
-                    aria-owns={open ? 'menu-options' : null}
-                    aria-haspopup="true"
-                    onClick={this.handleOptionsMenu}
-                    color="inherit"
-                >
-                    <MoreVertIcon />
-                </IconButton>
-                <Menu
-                    id="menu-options"
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
-                    open={open}
-                    onClose={this.handleMenuClose}
-                >
-                    <MenuItem onClick={this.onNewClick}>New Game</MenuItem>
-                    <MenuItem onClick={this.onRestartClick}>Restart Game</MenuItem>
-                    <MenuItem onClick={this.onSolveClick}>Solve Game</MenuItem>
-                </Menu>
-            </div>
+            <OptionsMenu />
         );
 
         return (
@@ -153,9 +91,7 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, { 
-    newGame, 
-    solveGame, 
-    restartGame,
+    newGame,
     undoMove,
     redoMove
 })(withStyles(styles)(Sodoku));
