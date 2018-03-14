@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'; 
 import { withStyles, Drawer, List, ListItem, ListItemText, ListSubheader } from 'material-ui-next';
 
-import { toggleDifficultyPanel, startGame, restartGame } from '../../actions/sudoku';
+import { toggleDifficultyPanel, startGame, restartGame, clearHistory } from '../../actions/sudoku';
 
 const styles = {
     list: {
@@ -25,10 +25,12 @@ class SelectDifficulty extends Component {
 
     handleChangeDifficulty = (difficulty) => {
         this.props.startGame(difficulty);
+        this.props.clearHistory();
     }
 
     handleRestartGame() {
         this.props.restartGame(this.props.board);
+        this.props.clearHistory();
     }
 
     render() {
@@ -86,5 +88,6 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, { 
     toggleDifficultyPanel,
     startGame,
-    restartGame
+    restartGame,
+    clearHistory
 })(withStyles(styles)(SelectDifficulty));

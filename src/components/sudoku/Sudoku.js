@@ -16,7 +16,7 @@ import LayoutBody from '../layout/LayoutBody';
 import './sudoku.css';
 import Board from './Board';
 import OptionsMenu from './OptionsMenu';
-import { startGame, undoMove, redoMove, useHint } from '../../actions/sudoku';
+import { startGame, undoMove, redoMove, useHint, clearHistory } from '../../actions/sudoku';
 import SelectDifficulty from './SelectDifficulty';
 
 const styles = {
@@ -49,6 +49,7 @@ class Sodoku extends Component {
 
     componentDidMount() {
         this.props.startGame(this.props.difficulty);
+        this.props.clearHistory();
     };
 
     onUndoClick() {
@@ -61,6 +62,7 @@ class Sodoku extends Component {
 
     handleUseHint() {
         this.props.useHint(this.props.board);
+        this.props.clearHistory();
     }
 
     render() {
@@ -91,11 +93,6 @@ class Sodoku extends Component {
                             <Button onClick={this.onUndoClick} disabled={!canUndo}>
                                 <span className={classes.buttonWrapper}>
                                     <UndoIcon /> Undo
-                                </span>
-                            </Button>
-                            <Button onClick={this.onRedoClick} disabled={!canRedo}>
-                                <span className={classes.buttonWrapper}>
-                                    <RedoIcon /> Redo
                                 </span>
                             </Button>
                             <Button>
@@ -136,5 +133,6 @@ export default connect(mapStateToProps, {
     startGame,
     undoMove,
     redoMove,
-    useHint
+    useHint,
+    clearHistory
 })(withStyles(styles)(Sodoku));

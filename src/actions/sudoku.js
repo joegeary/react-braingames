@@ -7,6 +7,7 @@ import {
     SUDOKU_SQUARE_CHANGE,
     SUDOKU_UNDO,
     SUDOKU_REDO, 
+    SUDOKU_CLEAR_HISTORY,
     SUDOKU_TOGGLE_DIFFICULTY_PANEL,
     SUDOKU_USE_HINT
 } from '../constants/actions';
@@ -14,6 +15,12 @@ import {
 export const toggleDifficultyPanel = () => {
     return {
         type: SUDOKU_TOGGLE_DIFFICULTY_PANEL
+    }
+}
+
+export const clearHistory = () => {
+    return {
+        type: SUDOKU_CLEAR_HISTORY
     }
 }
 

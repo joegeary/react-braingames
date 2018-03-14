@@ -7,13 +7,15 @@ import {
     SUDOKU_SQUARE_CHANGE, 
     SUDOKU_UNDO,
     SUDOKU_REDO,
-    SUDOKU_USE_HINT
+    SUDOKU_CLEAR_HISTORY,
+    SUDOKU_USE_HINT,
+    SUDOKU_HINTS
 } from '../constants/actions';
 
 const INITIAL_STATE = {
     difficulty: 'EASY',
     showDifficultySelector: false,
-    hints: 3,
+    hints: SUDOKU_HINTS,
     board: []
 };
 
@@ -29,7 +31,8 @@ const sudoku = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 difficulty: action.difficulty,
-                board: action.board
+                board: action.board,
+                hints: SUDOKU_HINTS
             };
 
         case SUDOKU_SQUARE_CHANGE:
@@ -57,7 +60,10 @@ const sudoku = (state = INITIAL_STATE, action) => {
 }
 
 export default undoable(sudoku, { 
-    filter: includeAction([SUDOKU_SQUARE_CHANGE, SUDOKU_START_GAME, SUDOKU_SOLVE_GAME]), 
+    filter: includeAction(SUDOKU_SQUARE_CHANGE),
     undoType: SUDOKU_UNDO, 
-    redoType: SUDOKU_REDO
+    redoType: SUDOKU_REDO,
+    syncFilter: true,
+    clearHistoryType: SUDOKU_CLEAR_HISTORY,
+    neverSkipReducer: true
 });
