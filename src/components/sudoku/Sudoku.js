@@ -27,6 +27,13 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         marginTop: '20px'
+    },
+    buttonWrapper: {
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        flexDirection: 'column'
     }
 };
 
@@ -76,10 +83,27 @@ class Sodoku extends Component {
                         <Typography variant="caption">{difficulty}</Typography>
                         <Board board={this.props.board} />
                         <div className={classes.buttons}>
-                            <Button onClick={this.onUndoClick} disabled={!canUndo}><UndoIcon /> Undo Move</Button>
-                            <Button onClick={this.onRedoClick} disabled={!canRedo}><RedoIcon /> Redo Move</Button>
-                            <Button><ModeEditIcon /> Pencil</Button>
-                            <Badge badgeContent={3} color="primary"><Button><LightbulbOutlineIcon />Hint</Button></Badge>
+                            <Button onClick={this.onUndoClick} disabled={!canUndo}>
+                                <span className={classes.buttonWrapper}>
+                                    <UndoIcon /> Undo
+                                </span>
+                            </Button>
+                            <Button onClick={this.onRedoClick} disabled={!canRedo}>
+                                <span className={classes.buttonWrapper}>
+                                    <RedoIcon /> Redo
+                                </span>
+                            </Button>
+                            <Button>
+                                <span className={classes.buttonWrapper}>
+                                    <ModeEditIcon /> Pencil
+                                </span>
+                            </Button>
+                            <Button>
+                                <span className={classes.buttonWrapper}>
+                                    <Badge badgeContent={3} color="primary"><LightbulbOutlineIcon /></Badge>
+                                    Hint
+                                </span>
+                            </Button>
                         </div>
                     </Paper>
                 </LayoutBody>
