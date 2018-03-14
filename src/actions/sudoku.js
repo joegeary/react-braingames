@@ -7,7 +7,8 @@ import {
     SUDOKU_SQUARE_CHANGE,
     SUDOKU_UNDO,
     SUDOKU_REDO, 
-    SUDOKU_TOGGLE_DIFFICULTY_PANEL
+    SUDOKU_TOGGLE_DIFFICULTY_PANEL,
+    SUDOKU_USE_HINT
 } from '../constants/actions';
 
 export const toggleDifficultyPanel = () => {
@@ -58,7 +59,7 @@ export const solveGame = (board) => {
 
     return {
         type: SUDOKU_SOLVE_GAME,
-        newBoard: newBoard
+        newBoard
     }
 }
 
@@ -86,10 +87,45 @@ export const redoMove = () => {
     };
 }
 
+export const useHint = (board) => {
+    const solvedBoard = JSON.parse(JSON.stringify(board));
+    const newBoard = JSON.parse(JSON.stringify(board));
+    
+    solvedBoard.forEach(row => {
+        row.forEach(cell => {
+            if (cell.editable) {
+                cell.value = '';
+            }
+        });
+    });
+
+    solvePuzzle(solvedBoard);
+
+    let found = false;
+    while (!found) {
+        const x = randomRange(0, newBoard.length - 1);
+        const y = randomRange(0, newBoard[x].length - 1);
+
+        if (newBoard[x][y].value === '') {
+            found = true;
+            newBoard[x][y].value = solvedBoard[x][y].value;
+        }
+    }
+
+    return {
+        type: SUDOKU_USE_HINT,
+        newBoard
+    }
+}
+
 
 
 
 // find a better place to put these
+const randomRange = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 const generateBoard = (difficulty) => {
     let board = chunk(getRandomGame(difficulty).split(''), 9);
     

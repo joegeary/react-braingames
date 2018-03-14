@@ -6,12 +6,14 @@ import {
     SUDOKU_SOLVE_GAME,
     SUDOKU_SQUARE_CHANGE, 
     SUDOKU_UNDO,
-    SUDOKU_REDO
+    SUDOKU_REDO,
+    SUDOKU_USE_HINT
 } from '../constants/actions';
 
 const INITIAL_STATE = {
     difficulty: 'EASY',
     showDifficultySelector: false,
+    hints: 3,
     board: []
 };
 
@@ -40,6 +42,13 @@ const sudoku = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 board: action.newBoard
+            }
+
+        case SUDOKU_USE_HINT:
+            return {
+                ...state,
+                board: action.newBoard,
+                hints: state.hints - 1
             }
             
         default:

@@ -16,7 +16,7 @@ import LayoutBody from '../layout/LayoutBody';
 import './sudoku.css';
 import Board from './Board';
 import OptionsMenu from './OptionsMenu';
-import { startGame, undoMove, redoMove } from '../../actions/sudoku';
+import { startGame, undoMove, redoMove, useHint } from '../../actions/sudoku';
 import SelectDifficulty from './SelectDifficulty';
 
 const styles = {
@@ -44,6 +44,7 @@ class Sodoku extends Component {
         
         this.onUndoClick = this.onUndoClick.bind(this);
         this.onRedoClick = this.onRedoClick.bind(this);
+        this.handleUseHint = this.handleUseHint.bind(this);
     }
 
     componentDidMount() {
@@ -58,8 +59,12 @@ class Sodoku extends Component {
         this.props.redoMove();
     }
 
+    handleUseHint() {
+        this.props.useHint(this.props.board);
+    }
+
     render() {
-        const { classes, difficulty, canUndo, canRedo } = this.props;
+        const { classes, difficulty, hints, canUndo, canRedo } = this.props;
 
         const appBarLeft = (
             <IconButton component={Link} to="/">
@@ -98,9 +103,11 @@ class Sodoku extends Component {
                                     <ModeEditIcon /> Pencil
                                 </span>
                             </Button>
-                            <Button>
+                            <Button onClick={this.handleUseHint} disabled={hints===0}>
                                 <span className={classes.buttonWrapper}>
-                                    <Badge badgeContent={3} color="primary"><LightbulbOutlineIcon /></Badge>
+                                    { hints > 0 
+                                        ? (<Badge badgeContent={hints} color="primary"><LightbulbOutlineIcon /></Badge>) 
+                                        : (<LightbulbOutlineIcon />) }
                                     Hint
                                 </span>
                             </Button>
@@ -114,10 +121,11 @@ class Sodoku extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const { difficulty, board } = state.sudoku.present;
+    const { difficulty, board, hints } = state.sudoku.present;
 
     return {
         difficulty,
+        hints,
         board,
         canUndo: state.sudoku.past.length > 0,
         canRedo: state.sudoku.future.length > 0
@@ -127,5 +135,6 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, { 
     startGame,
     undoMove,
-    redoMove
+    redoMove,
+    useHint
 })(withStyles(styles)(Sodoku));
