@@ -14,10 +14,13 @@ import LayoutAppBar from '../layout/LayoutAppBar';
 import LayoutBody from '../layout/LayoutBody';
 
 import './sudoku.css';
+import Timer from '../Timer';
 import Board from './Board';
 import OptionsMenu from './OptionsMenu';
-import { startGame, undoMove, redoMove, useHint, clearHistory } from '../../actions/sudoku';
 import SelectDifficulty from './SelectDifficulty';
+
+import { startGame, undoMove, redoMove, useHint, clearHistory } from '../../actions/sudoku';
+import { startTimer, resetTimer } from '../../actions/stopwatch';
 
 const styles = {
     board: {
@@ -56,6 +59,9 @@ class Sodoku extends Component {
     componentDidMount() {
         this.props.startGame(this.props.difficulty);
         this.props.clearHistory();
+
+        this.props.resetTimer();
+        this.props.startTimer();
     };
 
     onUndoClick() {
@@ -94,7 +100,7 @@ class Sodoku extends Component {
                 <LayoutBody className={classes.board}>
                     <div className={classes.text}>
                         <Typography variant="caption">{difficulty}</Typography>
-                        <Typography variant="caption">00:00</Typography>
+                        <Typography variant="caption"><Timer updateInterval="1000" /></Typography>
                     </div>
                     <Board board={this.props.board} />
                     <div className={classes.buttons}>
@@ -141,5 +147,7 @@ export default connect(mapStateToProps, {
     undoMove,
     redoMove,
     useHint,
-    clearHistory
+    clearHistory,
+    startTimer,
+    resetTimer
 })(withStyles(styles)(Sodoku));
