@@ -1,25 +1,25 @@
 
 
-.sudoku table.board {
+.sudoku {
     margin: 0 auto;
     border-collapse: collapse;
     border: 2px solid grey;
 }
 
-.sudoku table.board tr:nth-child(3n+4) .square {
+.sudoku tr:nth-child(3n+4) .square {
   border-top: 2px solid grey;
 }
 
-.sudoku table.board td:nth-child(3n+4) .square {
+.sudoku td:nth-child(3n+4) .square {
   border-left: 2px solid grey;
 }
 
-.sudoku table td {
+.sudoku td {
 	margin: 0;
 	padding:0;
 }
 
-.sudoku table .square {
+.sudoku .square {
 	box-sizing: border-box;
 	border: 0.5px solid #ddd;
 	padding: 0;
@@ -41,15 +41,15 @@
     -ms-user-select: all;      /* No support yet */
     user-select: all;          /* Likely future */   
 }
-.sudoku table .square.valid {
+.sudoku .square.valid {
     text-shadow: 0 0 0  #690;
 }
-.sudoku table .square.invalid {
+.sudoku .square.invalid {
     text-shadow: 0 0 0 #900;
 }
-.sudoku table .square:focus {
+.sudoku .square:focus {
     outline: none;
     background-color: #ccc;
 }
-.sudoku table .square::selection { background: transparent; }
-.sudoku table .square::-moz-selection { background: transparent; }
+.sudoku .square::selection { background: transparent; }
+.sudoku .square::-moz-selection { background: transparent; }

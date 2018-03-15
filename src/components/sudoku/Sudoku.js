@@ -23,6 +23,12 @@ const styles = {
     board: {
         paddingTop: '20px'
     },
+    text: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        margin: '10px auto',
+        width: '362px'
+    },
     buttons: {
         display: 'flex',
         justifyContent: 'center',
@@ -85,31 +91,32 @@ class Sodoku extends Component {
                     iconElementLeft={appBarLeft}
                     iconElementRight={appBarRight}
                 />
-                <LayoutBody className="sudoku">
-                    <Paper square className={classes.board} >
+                <LayoutBody className={classes.board}>
+                    <div className={classes.text}>
                         <Typography variant="caption">{difficulty}</Typography>
-                        <Board board={this.props.board} />
-                        <div className={classes.buttons}>
-                            <Button onClick={this.onUndoClick} disabled={!canUndo}>
-                                <span className={classes.buttonWrapper}>
-                                    <UndoIcon /> Undo
-                                </span>
-                            </Button>
-                            <Button>
-                                <span className={classes.buttonWrapper}>
-                                    <ModeEditIcon /> Pencil
-                                </span>
-                            </Button>
-                            <Button onClick={this.handleUseHint} disabled={hints===0}>
-                                <span className={classes.buttonWrapper}>
-                                    { hints > 0 
-                                        ? (<Badge badgeContent={hints} color="primary"><LightbulbOutlineIcon /></Badge>) 
-                                        : (<LightbulbOutlineIcon />) }
-                                    Hint
-                                </span>
-                            </Button>
-                        </div>
-                    </Paper>
+                        <Typography variant="caption">00:00</Typography>
+                    </div>
+                    <Board board={this.props.board} />
+                    <div className={classes.buttons}>
+                        <Button onClick={this.onUndoClick} disabled={!canUndo}>
+                            <span className={classes.buttonWrapper}>
+                                <UndoIcon /> Undo
+                            </span>
+                        </Button>
+                        <Button>
+                            <span className={classes.buttonWrapper}>
+                                <ModeEditIcon /> Pencil
+                            </span>
+                        </Button>
+                        <Button onClick={this.handleUseHint} disabled={hints===0}>
+                            <span className={classes.buttonWrapper}>
+                                { hints > 0 
+                                    ? (<Badge badgeContent={hints} color="primary"><LightbulbOutlineIcon /></Badge>) 
+                                    : (<LightbulbOutlineIcon />) }
+                                Hint
+                            </span>
+                        </Button>
+                    </div>
                 </LayoutBody>
                 <SelectDifficulty />
             </ViewContainer>
