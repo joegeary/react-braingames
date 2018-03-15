@@ -8,13 +8,13 @@ import {
     SUDOKU_UNDO,
     SUDOKU_REDO, 
     SUDOKU_CLEAR_HISTORY,
-    SUDOKU_TOGGLE_DIFFICULTY_PANEL,
+    SUDOKU_TOGGLE_NEW_GAME_MENU,
     SUDOKU_USE_HINT
 } from '../constants/actions';
 
-export const toggleDifficultyPanel = () => {
+export const toggleNewGameMenu = () => {
     return {
-        type: SUDOKU_TOGGLE_DIFFICULTY_PANEL
+        type: SUDOKU_TOGGLE_NEW_GAME_MENU
     }
 }
 

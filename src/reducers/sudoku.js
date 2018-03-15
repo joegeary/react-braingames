@@ -1,7 +1,7 @@
 import undoable, { includeAction } from 'redux-undo';
 
 import {
-    SUDOKU_TOGGLE_DIFFICULTY_PANEL,
+    SUDOKU_TOGGLE_NEW_GAME_MENU,
     SUDOKU_START_GAME,
     SUDOKU_SOLVE_GAME,
     SUDOKU_SQUARE_CHANGE, 
@@ -14,23 +14,23 @@ import {
 
 const INITIAL_STATE = {
     difficulty: 'EASY',
-    showDifficultySelector: false,
+    showNewGameMenu: false,
     hints: SUDOKU_HINTS,
     board: []
 };
 
 const sudoku = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case SUDOKU_TOGGLE_DIFFICULTY_PANEL:
+        case SUDOKU_TOGGLE_NEW_GAME_MENU:
             return {
                 ...state,
-                showDifficultySelector: !state.showDifficultySelector
+                showNewGameMenu: !state.showNewGameMenu
             };
 
         case SUDOKU_START_GAME:
             return {
                 ...state,
-                difficulty: action.difficulty,
+                difficulty: action.difficulty || state.difficulty,
                 board: action.board,
                 hints: SUDOKU_HINTS
             };

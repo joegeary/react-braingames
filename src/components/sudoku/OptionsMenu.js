@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Button, IconButton, Menu, MenuItem } from 'material-ui-next';
 import MoreVertIcon from 'material-ui-icons-next/MoreVert';
 
-import { toggleDifficultyPanel, solveGame } from '../../actions/sudoku';
+import { toggleNewGameMenu, solveGame } from '../../actions/sudoku';
 
 class OptionsMenu extends Component {
     state = {
@@ -23,7 +23,7 @@ class OptionsMenu extends Component {
     }
 
     handleNewGame = () => {
-        this.props.toggleDifficultyPanel();
+        this.props.toggleNewGameMenu();
         this.handleCloseMenu();
     }
 
@@ -79,6 +79,6 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, {
-    toggleDifficultyPanel, 
+    toggleNewGameMenu, 
     solveGame
 })(OptionsMenu);

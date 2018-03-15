@@ -17,7 +17,7 @@ import './sudoku.css';
 import Timer from '../Timer';
 import Board from './Board';
 import OptionsMenu from './OptionsMenu';
-import SelectDifficulty from './SelectDifficulty';
+import NewGameMenu from './NewGameMenu';
 
 import { startGame, undoMove, redoMove, useHint, clearHistory } from '../../actions/sudoku';
 import { startTimer, resetTimer } from '../../actions/stopwatch';
@@ -124,7 +124,7 @@ class Sodoku extends Component {
                         </Button>
                     </div>
                 </LayoutBody>
-                <SelectDifficulty />
+                <NewGameMenu />
             </ViewContainer>
         );
     }
