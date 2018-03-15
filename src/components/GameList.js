@@ -1,22 +1,26 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Paper, List, ListItem, ListItemText, IconButton } from 'material-ui-next';
+import { Grid, IconButton } from 'material-ui-next';
 import MoreVertIcon from 'material-ui-icons-next/MoreVert';
 
 import ViewContainer from './layout/ViewContainer';
 import LayoutAppBar from './layout/LayoutAppBar';
 import ScrollView from './layout/ScrollView';
 import LayoutBody from './layout/LayoutBody';
+import GameCard from './GameCard';
 
 const games = [{
     key: 'sudoku',
-    title: 'Suduku'
+    title: 'Suduku',
+    abbr: 'SU',
+    description: 'Sudoku is a number placing puzzle based on a 9x9 grid with several given numbers. The object is to place the numbers 1 to 9 in the empty squares so that each row, each column and each 3x3 box contains the same number only once.'
 }, {
     key: 'minesweeper',
-    title: 'Minesweeper'
+    title: 'Minesweeper',
+    abbr: 'MS'
 }, {
     key: 'slider',
-    title: 'Slide Puzzle'
+    title: 'Slide Puzzle',
+    abbr: 'SP'
 }];
 
 const styles = {
@@ -45,15 +49,13 @@ class GameList extends Component {
                 />
                 <ScrollView>
                     <LayoutBody style={styles.content}>
-                        <Paper square>
-                            <List component="nav">
-                                {games.map(game => (
-                                    <ListItem button key={game.key} component={Link} to={'/' + game.key}>
-                                        <ListItemText primary={game.title} />
-                                    </ListItem>
-                                ))}
-                            </List>
-                        </Paper>
+                        <Grid container spacing={24}>
+                            {games.map(game => (
+                                <Grid item xs={3}>
+                                    <GameCard game={game} />
+                                </Grid>
+                            ))}
+                        </Grid>
                     </LayoutBody>
                 </ScrollView>
             </ViewContainer>

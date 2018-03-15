@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 const styles = (theme) => ({
     root: {
-        margin: '0 0 38px'
+        margin: '20px 0 38px'
     },
     rootResponsive: {
         '@media (min-width: 600px)': {
