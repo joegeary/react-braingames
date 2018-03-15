@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Button, IconButton, Menu, MenuItem } from 'material-ui-next';
 import MoreVertIcon from 'material-ui-icons-next/MoreVert';
 
@@ -61,7 +62,7 @@ class OptionsMenu extends Component {
                     open={open}
                     onClose={this.handleCloseMenu}
                 >
-                    <MenuItem onClick={this.handleNewGame}>Help</MenuItem>
+                    <MenuItem component={Link} to="/sudoku/rules">How To Play</MenuItem>
                     <MenuItem onClick={this.handleSolveGame}>Solve Game</MenuItem>
                 </Menu>
             </div>
