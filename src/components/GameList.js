@@ -17,26 +17,16 @@ const styles = {
 
 class GameList extends Component {
     state = {
-        selectedTab: 0,
+        selectedTab: 'all',
         selectedGames: allGames
     };
 
     handleTabChange = (evt, value) => {
-        let selectedGames = allGames;
-        switch (value) {
-            case 1:
-                selectedGames = allGames.filter(game => game.category === 'puzzle');
-                break;
-            case 2:
-                selectedGames = allGames.filter(game => game.category === 'arcade');
-                break;
-            case 3:
-                selectedGames = allGames.filter(game => game.favorite);
-                break;
-            default:
-                selectedGames = allGames;
-                break;
-        }
+        let selectedGames = allGames.filter(game => 
+            game.category === value
+            || value === 'all'
+            || (value === 'favorites' && game.favorite)
+        );
 
         this.setState({ 
             selectedTab: value,
@@ -63,10 +53,10 @@ class GameList extends Component {
                     textColor="primary"
                     centered
                 >
-                    <Tab label="All Games" />
-                    <Tab label="Puzzle" />
-                    <Tab label="Arcade" />
-                    <Tab label="Favorites" />
+                    <Tab label="All Games" value="all" />
+                    <Tab label="Puzzle" value="puzzle" />
+                    <Tab label="Arcade" value="arcade" />
+                    <Tab label="Favorites" value="favorites" />
                 </Tabs>
                 </AppBar>
                 <ScrollView>

@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import GameList from './components/GameList';
 
 import Sudoku from './components/sudoku/Sudoku';
-import SudokuRules from './components/sudoku/Rules';
+import Rules from './components/Rules';
 
 class App extends Component {
     render() {
@@ -12,8 +12,8 @@ class App extends Component {
             <BrowserRouter>
                 <Switch>
                     <Route exact path="/" component={GameList} />
+                    <Route exact path="/:game/rules" component={Rules} />
                     <Route exact path="/sudoku" component={Sudoku} />
-                    <Route exact path="/sudoku/rules" component={SudokuRules} />
                 </Switch>
             </BrowserRouter>
         );

@@ -5,7 +5,17 @@ const games = [{
     description: 'Sudoku is a number placing puzzle based on a 9x9 grid with several given numbers. The object is to place the numbers 1 to 9 in the empty squares so that each row, each column and each 3x3 box contains the same number only once.',
     category: 'puzzle',
     color: '#E04F5F',
-    favorite: true
+    favorite: true,
+    rules: `
+Sudoku is a number placing puzzle based on a 9x9 grid with several given numbers. The object is to place the numbers 1 to 9 in the empty squares so that each row, each column and each 3x3 box contains the same number only once.
+
+**Rules**
+* A number can only appear only once on each row
+* A number can only appear only once on each column
+* A number can only appear only once on each 3x3 box
+* The pre-placed "given" numbers cannot be changed
+* A square can only contain a number from 1 to 9    
+    `
 }, {
     key: 'minesweeper',
     title: 'Minesweeper',

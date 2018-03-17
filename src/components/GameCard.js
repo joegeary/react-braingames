@@ -61,6 +61,7 @@ const styles = (theme) => ({
 
 const GameCard = (props) => {
     const { game, classes } = props;
+    const favIconColor = game.favorite ? 'primary' : 'default'
 
     return (
         <Card>
@@ -79,7 +80,7 @@ const GameCard = (props) => {
                 <Typography className={classes.description} component="p">{game.description}</Typography>
             </CardContent>
             <CardActions className={classes.actions} disableActionSpacing>
-                <IconButton aria-label="Add to favorites" title="Add to favorites">
+                <IconButton aria-label="Add to favorites" title="Add to favorites" color={favIconColor}>
                     <FavoriteIcon />
                 </IconButton>
                 <Button component={Link} to={'/' + game.key}>More Details</Button>
