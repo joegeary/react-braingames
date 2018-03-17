@@ -23,7 +23,8 @@ Sudoku is a number placing puzzle based on a 9x9 grid with several given numbers
     description: 'The classic mine-finding game. Search tiles to uncover clues and figure out where all the mines are. Sweep the entire area and flag all of the mines to win!',
     category: 'puzzle',
     color: '#31BEA6',
-    favorite: false
+    favorite: false,
+    rules: 'TODO'
 }, {
     key: 'slider',
     title: 'Slide Puzzle',
@@ -31,7 +32,8 @@ Sudoku is a number placing puzzle based on a 9x9 grid with several given numbers
     description: 'Move the numbered blocks around until they are in numerical order.',
     category: 'puzzle',
     color: '#25B7D3',
-    favorite: false
+    favorite: false,
+    rules: 'TODO'
 }, {
     key: 'snake',
     title: 'Snake',
@@ -39,7 +41,8 @@ Sudoku is a number placing puzzle based on a 9x9 grid with several given numbers
     description: 'Maneuver a line which grows in length as you run over food, while avoiding obstacles and the line itself.',
     category: 'arcade',
     color: '#FABC3D',
-    favorite: false
+    favorite: false,
+    rules: 'TODO'
 }];
 
 export default games;
