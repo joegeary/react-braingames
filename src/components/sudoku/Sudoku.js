@@ -12,7 +12,6 @@ import ViewContainer from '../layout/ViewContainer';
 import LayoutAppBar from '../layout/LayoutAppBar';
 import LayoutBody from '../layout/LayoutBody';
 
-import './sudoku.css';
 import Timer from '../Timer';
 import Board from './Board';
 import OptionsMenu from './OptionsMenu';

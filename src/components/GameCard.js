@@ -67,13 +67,13 @@ const GameCard = (props) => {
         <Card>
             <CardHeader
                 avatar={
-                    <Avatar component={Link} to={'/' + game.key} aria-label="Game" className={classes.avatar} style={{backgroundColor: game.color}}>{game.abbr}</Avatar>
+                    <Avatar component={Link} to={`/${game.key}`} aria-label="Game" className={classes.avatar} style={{backgroundColor: game.color}}>{game.abbr}</Avatar>
                 }
                 title={
-                    <Typography component={Link} to={'/' + game.key} variant="body2" className={classes.title}>{game.title}</Typography>
+                    <Typography component={Link} to={`/${game.key}`} variant="body2" className={classes.title}>{game.title}</Typography>
                 }
             />
-            <CardMedia className={classes.media} image={'/img/' + game.key + '.png'} title={game.title}>
+            <CardMedia className={classes.media} image={`/img/${game.key}.png`} title={game.title}>
                 <Typography component="div" variant="body2" className={classes.category}>{game.category}</Typography>
             </CardMedia>
             <CardContent className={classes.content}>
@@ -83,7 +83,7 @@ const GameCard = (props) => {
                 <IconButton aria-label="Add to favorites" title="Add to favorites" color={favIconColor}>
                     <FavoriteIcon />
                 </IconButton>
-                <Button component={Link} to={'/' + game.key}>More Details</Button>
+                <Button component={Link} to={`/${game.key}`}>More Details</Button>
             </CardActions>
         </Card>     
     )

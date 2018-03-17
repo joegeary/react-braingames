@@ -15,7 +15,7 @@ const Rules = ({ match }) => {
     const game = games.filter(g => g.key === key)[0];
 
     const appBarLeft = (
-        <IconButton component={Link} to={'/' + key}>
+        <IconButton component={Link} to={`/${key}`}>
             <ArrowBackIcon />
         </IconButton>
     );
@@ -23,7 +23,7 @@ const Rules = ({ match }) => {
     return (
         <ViewContainer>
             <LayoutAppBar
-                title={game.title + ' - How To Play'}
+                title={`${game.title} - How To Play`}
                 iconElementLeft={appBarLeft}
             />
             <LayoutBody>
