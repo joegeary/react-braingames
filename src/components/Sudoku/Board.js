@@ -2,7 +2,7 @@ import React from 'react';
 import Cell from './Cell';
 
 const Board = (props) => (
-    <table className="board">
+    <table className="sudoku">
         <tbody>
             {props.board.map((row, i) => (
                 <tr key={i}>

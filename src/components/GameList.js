@@ -1,23 +1,13 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Paper, List, ListItem, ListItemText, IconButton } from 'material-ui-next';
-import MoreVertIcon from 'material-ui-icons-next/MoreVert';
+import { Grid, IconButton, Tab, Tabs, AppBar } from 'material-ui-next';
+import AccountCircleIcon from 'material-ui-icons-next/AccountCircle';
 
 import ViewContainer from './layout/ViewContainer';
 import LayoutAppBar from './layout/LayoutAppBar';
 import ScrollView from './layout/ScrollView';
 import LayoutBody from './layout/LayoutBody';
-
-const games = [{
-    key: 'sudoku',
-    title: 'Suduku'
-}, {
-    key: 'minesweeper',
-    title: 'Minesweeper'
-}, {
-    key: 'slider',
-    title: 'Slide Puzzle'
-}];
+import GameCard from './GameCard';
+import allGames from '../games';
 
 const styles = {
     content: {
@@ -26,15 +16,27 @@ const styles = {
 };
 
 class GameList extends Component {
-    handleTouchTapItem = (e, item) => {
-        e.preventDefault();
+    state = {
+        selectedTab: 'all',
+        selectedGames: allGames
+    };
 
-        debugger;
+    handleTabChange = (evt, value) => {
+        let selectedGames = allGames.filter(game => 
+            game.category === value
+            || value === 'all'
+            || (value === 'favorites' && game.favorite)
+        );
+
+        this.setState({ 
+            selectedTab: value,
+            selectedGames
+        });
     };
 
     render() {
         const appBarRight = (
-            <IconButton><MoreVertIcon /></IconButton>
+            <IconButton><AccountCircleIcon /></IconButton>
         );
 
         return (
@@ -43,17 +45,29 @@ class GameList extends Component {
                     title="React Brain Games"
                     iconElementRight={appBarRight}
                 />
+                <AppBar position="static" color="default">
+                <Tabs
+                    value={this.state.selectedTab}
+                    onChange={this.handleTabChange}
+                    indicatorColor="primary"
+                    textColor="primary"
+                    centered
+                >
+                    <Tab label="All Games" value="all" />
+                    <Tab label="Puzzle" value="puzzle" />
+                    <Tab label="Arcade" value="arcade" />
+                    <Tab label="Favorites" value="favorites" />
+                </Tabs>
+                </AppBar>
                 <ScrollView>
                     <LayoutBody style={styles.content}>
-                        <Paper square>
-                            <List component="nav">
-                                {games.map(game => (
-                                    <ListItem button key={game.key} component={Link} to={'/' + game.key}>
-                                        <ListItemText primary={game.title} />
-                                    </ListItem>
-                                ))}
-                            </List>
-                        </Paper>
+                        <Grid container spacing={24}>
+                            {this.state.selectedGames.map(game => (
+                                <Grid item xs={12} sm={4} lg={3} key={game.key}>
+                                    <GameCard game={game} />
+                                </Grid>
+                            ))}
+                        </Grid>
                     </LayoutBody>
                 </ScrollView>
             </ViewContainer>

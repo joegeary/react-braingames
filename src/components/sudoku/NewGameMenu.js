@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'; 
 import { withStyles, Drawer, List, ListItem, ListItemText, ListSubheader } from 'material-ui-next';
 
-import { toggleDifficultyPanel, startGame, restartGame, clearHistory } from '../../actions/sudoku';
+import { toggleNewGameMenu, startGame, restartGame, clearHistory } from '../../actions/sudoku';
+import { startTimer, resetTimer } from '../../actions/stopwatch';
+
 
 const styles = {
     list: {
@@ -10,7 +12,7 @@ const styles = {
     }
 };
 
-class SelectDifficulty extends Component {
+class NewGameMenu extends Component {
 
     constructor(props) {
         super(props);
@@ -20,24 +22,28 @@ class SelectDifficulty extends Component {
     }
 
     hideDrawer = () => {
-        this.props.toggleDifficultyPanel();
+        this.props.toggleNewGameMenu();
     }
 
     handleChangeDifficulty = (difficulty) => {
         this.props.startGame(difficulty);
         this.props.clearHistory();
+
+        this.props.resetTimer();
     }
 
     handleRestartGame() {
         this.props.restartGame(this.props.board);
         this.props.clearHistory();
+
+        this.props.resetTimer();
     }
 
     render() {
-        const { classes, showDifficultySelector } = this.props;
+        const { classes, showNewGameMenu } = this.props;
 
         return (
-            <Drawer anchor="bottom" open={showDifficultySelector} onClose={this.hideDrawer}>
+            <Drawer anchor="bottom" open={showNewGameMenu} onClose={this.hideDrawer}>
                 <div
                     tabIndex={0}
                     role="button"
@@ -76,18 +82,20 @@ class SelectDifficulty extends Component {
 
 
 const mapStateToProps = (state) => {
-    const { difficulty, board, showDifficultySelector } = state.sudoku.present;
+    const { difficulty, board, showNewGameMenu } = state.sudoku.present;
 
     return {
         difficulty,
         board,
-        showDifficultySelector
+        showNewGameMenu
     };
 }
 
 export default connect(mapStateToProps, { 
-    toggleDifficultyPanel,
+    toggleNewGameMenu,
     startGame,
     restartGame,
-    clearHistory
-})(withStyles(styles)(SelectDifficulty));
+    clearHistory,
+    startTimer,
+    resetTimer
+})(withStyles(styles)(NewGameMenu));
