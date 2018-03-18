@@ -28,12 +28,12 @@ const styles = {
         display: 'flex',
         justifyContent: 'space-between',
         margin: '10px auto',
-        width: '362px'
+        width: '375px'
     },
     buttons: {
         display: 'flex',
         justifyContent: 'center',
-        marginTop: '20px'
+        paddingTop: '20px'
     },
     buttonWrapper: {
         display: 'inline-flex',

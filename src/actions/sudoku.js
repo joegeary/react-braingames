@@ -5,6 +5,7 @@ import {
     SUDOKU_START_GAME,
     SUDOKU_SOLVE_GAME,
     SUDOKU_SQUARE_CHANGE,
+    SUDOKU_SQUARE_SELECT,
     SUDOKU_UNDO,
     SUDOKU_REDO, 
     SUDOKU_CLEAR_HISTORY,
@@ -80,6 +81,13 @@ export const changeSquareValue = (x, y, value, board) => {
         type: SUDOKU_SQUARE_CHANGE,
         newBoard
     };
+}
+
+export const selectSquare = (cell) => {
+    return {
+        type: SUDOKU_SQUARE_SELECT,
+        cell
+    }
 }
 
 export const undoMove = () => {
@@ -174,6 +182,9 @@ const validateBoard = (board) => {
 
 const validateCell = (board, x, y) => {
     const value = board[x][y].value;
+
+    if (value === '') 
+        return true;
 
     // check the row
     for (let i = 0; i < board.length; i++) {
