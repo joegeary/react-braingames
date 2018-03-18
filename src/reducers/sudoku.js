@@ -5,6 +5,7 @@ import {
     SUDOKU_START_GAME,
     SUDOKU_SOLVE_GAME,
     SUDOKU_SQUARE_CHANGE, 
+    SUDOKU_SQUARE_SELECT,
     SUDOKU_UNDO,
     SUDOKU_REDO,
     SUDOKU_CLEAR_HISTORY,
@@ -16,7 +17,8 @@ const INITIAL_STATE = {
     difficulty: 'EASY',
     showNewGameMenu: false,
     hints: SUDOKU_HINTS,
-    board: []
+    board: [],
+    selected: undefined
 };
 
 const sudoku = (state = INITIAL_STATE, action) => {
@@ -40,6 +42,12 @@ const sudoku = (state = INITIAL_STATE, action) => {
                 ...state,
                 board: action.newBoard
             };
+
+        case SUDOKU_SQUARE_SELECT:
+            return {
+                ...state,
+                selected: action.cell
+            };            
 
         case SUDOKU_SOLVE_GAME:
             return {

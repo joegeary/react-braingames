@@ -6,12 +6,17 @@ import Cell from './Cell';
 const styles = (theme) => ({
     root: {
         margin: '0 auto',
-        border: '2px solid grey',
-        borderCollapse: 'collapse',
+        width: '375px',
+        boxShadow: '0 0 5px 5px #bdc3c7',
+        userSelect: 'none'
+
+    },
+    clear: {
+        clear: 'both'
     },
     row: {
         '&:nth-child(3n+4) input': {
-            borderTop: '2px solid grey'
+            borderLeft: '2px solid grey'
         }
     }
 });
@@ -20,22 +25,21 @@ const Board = (props) => {
     const { classes } = props;
 
     return (
-        <table className={classes.root}>
-            <tbody>
-                {props.board.map((row, i) => (
-                    <tr key={i} className={classes.row}>
-                        {row.map((cell) => (
-                            <Cell 
-                                key={cell.x + '' + cell.y}
-                                cell={cell}
-                                board={props.board}
-                                onCellChange={props.onCellChange}
-                            />
-                        ))}
-                    </tr>
-                ))}
-            </tbody>
-        </table>
+        <div className={classes.root}>
+            {props.board.map((row, i) => (
+                <React.Fragment key={i}>
+                    {row.map((cell) => (
+                        <Cell 
+                            key={cell.x + '' + cell.y}
+                            cell={cell}
+                            board={props.board}
+                            onCellChange={props.onCellChange}
+                        />
+                    ))}
+                </React.Fragment>
+            ))}
+            <div className={classes.clear}></div>
+        </div>
     );
 };
 

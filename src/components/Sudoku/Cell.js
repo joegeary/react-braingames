@@ -3,49 +3,57 @@ import { connect } from 'react-redux';
 import { withStyles } from 'material-ui-next';
 import classNames from 'classnames';
 
-import { changeSquareValue } from '../../actions/sudoku';
+import { changeSquareValue, selectSquare } from '../../actions/sudoku';
 
 const styles = {
     root: {
-        margin: 0,
-        padding: 0,
-        '&:nth-child(3n+4) input': {
-            borderLeft: '2px solid grey'
-        }
+        height: '42px',
+        width: '11.11%',
+        display: 'inline-block',
+        float: 'left',
+        textAlign: 'center',
+        overflow: 'hidden',
+        boxSizing: 'border-box',
+        boxShadow: '0 0 0 1px #bdc3c7',
+        background: 'white',
+        color: '#2c3e50',
+        cursor: 'pointer' 
+    },
+    vertLine: {
+        boxShadow: '0 0 0 1px #bdc3c7, inset -2px 0 0 #34495e'
+    },
+    horzLine: {
+        boxShadow: '0px 0px 0px 1px #bdc3c7, inset 0px -2px 0 0 #34495e'
+    },
+    bothLine: {
+        boxShadow: '0px 0px 0px 1px #bdc3c7, inset -2px 0 0 black, inset 0px -2px 0 black'
     },
     input: {
-        boxSizing: 'border-box',
-	    border: '0.5px solid #ddd',
-	    padding: 0,
-	    margin: 0,
-	    height: '40px',
-	    width: '40px',
-	    textAlign: 'center',
-        fontSize: '20px',
-        backgroundColor: '#f3f3f3',
-        cursor: 'default',
-        color: 'transparent',
-        textShadow: '0 0 0 #404040',
-        '-webkit-user-select': 'all',
-        '-moz-user-select': 'all',
-        '-ms-user-select': 'all',
-        'user-select': 'all',
-        '&:focus': {
-            outline: 'none',
-            backgroundColor: '#ccc'
-        },
-        '&::selection': {
-            background: 'transparent'
-        },
-        '&::-moz-selection': {
-            background: 'transparent'
-        }
+        lineHeight: '41px',
+        fontSize: '14px',
+        textAlign: 'center',
+        marginLeft: '-1px'
     },
-    valid: {
-        textShadow: '0 0 0 #690'
+    fixed: {
+        background: '#ecf0f1',
+        cursor: 'not-allowed' 
+    },
+    highlight: {
+        background: '#ffe'
+    },
+    match: {
+        fontWeight: 'bold',
+        color: '#3498db'
+    },
+    selected: {
+        position: 'relative',
+        background: '#3498db',
+        fontWeight: 'bold',
+        boxShadow: '0 0 3px 3px #bdc3c7'
     },
     invalid: {
-        textShadow: '0 0 0 #900'
+        background: '#efdbdb',
+        color: '#900'
     }
 }
 
@@ -54,56 +62,82 @@ class Cell extends Component {
     constructor(props) {
         super(props);
 
-        this.onChange = this.onChange.bind(this);
         this.onClick = this.onClick.bind(this);
-    }
-
-    shouldComponentUpdate(newProps) {
-         const oldCell = this.props.cell;
-         const newCell = newProps.cell;
-
-         return oldCell.value !== newCell.value || oldCell.editable !== newCell.editable;
+        this.onKeyPress = this.onKeyPress.bind(this);
     }
 
     onClick = (e) => {
-        e.target.select();
+        const { cell, selected } = this.props;
+        if (cell !== selected) {
+            this.props.selectSquare(cell);
+        }
     }
 
-    onChange = (e) => {
-        const cell = this.props.cell;
-        const newValue = e.target.value;
+    onKeyPress = (e) => {
+        const { cell, board } = this.props;
+        const newValue = this.isValid(e.key) ? e.key : '';
 
-        if (!this.isValid(newValue)) {
-            e.target.value = cell.value;
+        if (!cell.editable) {
             return;
         }
 
-        this.props.changeSquareValue(cell.x, cell.y, newValue === '' ? '' : newValue, this.props.board);
-        this.onClick(e);
+        this.props.changeSquareValue(cell.x, cell.y, newValue, board);
     }
 
     isValid = (val) => {
-        return (val === '' || /[1-9]/.test(val));
+        return (/[1-9]/.test(val));
     }
 
     render() {
-        const { cell, classes } = this.props;
-        const isValid = cell.editable ? (cell.valid ? 'valid' : 'invalid') : '';
+        const { cell, classes, selected } = this.props;
+        const arr = [classes.root];
+
+        if ((cell.y === 2 || cell.y === 5) && (cell.x === 2 || cell.x === 5)) {
+            arr.push(classes.bothLine);
+        } else if (cell.y === 2 || cell.y === 5) {
+            arr.push(classes.vertLine);
+        } else if (cell.x === 2 || cell.x === 5) {
+            arr.push(classes.horzLine);
+        }
+
+        if (selected) {
+            if (selected.x === cell.x && selected.y === cell.y) {
+                arr.push(classes.selected)
+            } else {
+                if (selected.x === cell.x || selected.y === cell.y || (Math.floor(selected.x / 3) === Math.floor(cell.x / 3) && Math.floor(selected.y / 3) === Math.floor(cell.y / 3))) {
+                    arr.push(classes.highlight);
+                }
+                if (selected.value === cell.value) {
+                    arr.push(classes.match);
+                }
+            }
+        }
+
+        if (!cell.editable) {
+            arr.push(classes.fixed);
+        } else if (!cell.valid) {
+            arr.push(classes.invalid);
+        }
 
         return (
-            <td className={classes.root}>
-                <input 
-                    /*className={`square ${isValid}`}*/
-                    className={classNames(classes.input, classes[isValid])}
-                    type="text" 
-                    value={cell.value} 
-                    disabled={!cell.editable}
-                    onClick={this.onClick}
-                    onChange={this.onChange}
-                />
-            </td>
+            <div 
+                className={classNames(arr)} 
+                onClick={this.onClick} 
+                onKeyUp={this.onKeyPress} 
+                tabIndex={cell.x * cell.y}
+            >
+                <span className={classes.input}>{cell.value}</span>
+            </div>
         )
     }
 }
 
-export default withStyles(styles)(connect(null, { changeSquareValue })(Cell));
+const mapStateToProps = (state) => {
+    const { selected } = state.sudoku.present;
+
+    return {
+        selected
+    };
+}
+
+export default withStyles(styles)(connect(mapStateToProps, { changeSquareValue, selectSquare })(Cell));
