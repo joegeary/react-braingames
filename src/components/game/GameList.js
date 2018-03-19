@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import { parse, stringify } from 'qs';
 import { Grid, IconButton, Tab, Tabs, AppBar } from 'material-ui-next';
 import AccountCircleIcon from 'material-ui-icons-next/AccountCircle';
 
@@ -16,25 +18,42 @@ const styles = {
 };
 
 class GameList extends Component {
-    state = {
-        selectedTab: 'all',
-        selectedGames: allGames
-    };
 
     handleTabChange = (evt, value) => {
-        let selectedGames = allGames.filter(game => 
-            game.category === value
-            || value === 'all'
-            || (value === 'favorites' && game.favorite)
-        );
+        var qs = this.getQueryParams();
+        qs.category = value;
 
-        this.setState({ 
-            selectedTab: value,
-            selectedGames
-        });
+        this.props.history.push('/?' + stringify(qs));
     };
 
+    getQueryParams() {
+        const { location } = this.props;
+        return location.search ? parse(location.search.substring(1)) : {};
+    }
+
+    getCategories() {
+        const categories = allGames.map(g => g.category);
+        return Array.from(new Set(categories));
+    }
+
+    getSelectedCategory(queryParams, categories) {
+        if (queryParams.category && (queryParams.category.toLowerCase() === 'favorites' || categories.indexOf(queryParams.category.toLowerCase()) > -1)) {
+            return queryParams.category.toLowerCase();
+        }
+
+        return 'all'
+    }
+
+    getFilteredGames(selectedCategory) {
+        return allGames.filter(game => game.category === selectedCategory || selectedCategory === 'all' || (selectedCategory === 'favorites' && game.favorite));
+    }
+
     render() {
+        const queryParams = this.getQueryParams();
+        const categories = this.getCategories();
+        const selectedCategory = this.getSelectedCategory(queryParams, categories);
+        const filteredGames = this.getFilteredGames(selectedCategory);        
+
         const appBarRight = (
             <IconButton><AccountCircleIcon /></IconButton>
         );
@@ -47,22 +66,21 @@ class GameList extends Component {
                 />
                 <AppBar position="static" color="default">
                 <Tabs
-                    value={this.state.selectedTab}
+                    value={selectedCategory}
                     onChange={this.handleTabChange}
-                    indicatorColor="primary"
-                    textColor="primary"
                     centered
                 >
                     <Tab label="All Games" value="all" />
-                    <Tab label="Puzzle" value="puzzle" />
-                    <Tab label="Arcade" value="arcade" />
+                    {categories.map(category => (
+                        <Tab label={category} value={category} />
+                    ))}
                     <Tab label="Favorites" value="favorites" />
                 </Tabs>
                 </AppBar>
                 <ScrollView>
                     <LayoutBody style={styles.content}>
                         <Grid container spacing={24}>
-                            {this.state.selectedGames.map(game => (
+                            {filteredGames.map(game => (
                                 <Grid item xs={12} sm={4} lg={3} key={game.key}>
                                     <GameCard game={game} />
                                 </Grid>
@@ -75,4 +93,4 @@ class GameList extends Component {
     }
 }
 
-export default GameList;
+export default withRouter(GameList);
