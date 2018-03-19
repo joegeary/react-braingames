@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { withStyles } from 'material-ui-next';
 import classNames from 'classnames';
 
-import { changeSquareValue, selectSquare } from '../../actions/sudoku';
+import { changeSquareValue, selectSquare, changeSquareNotes } from '../../actions/sudoku';
+import CellNotes from './CellNotes';
 
 const styles = {
     root: {
@@ -74,14 +75,18 @@ class Cell extends Component {
     }
 
     onKeyPress = (e) => {
-        const { cell, board } = this.props;
+        const { cell, board, pencilMode } = this.props;
         const newValue = this.isValid(e.key) ? e.key : '';
 
         if (!cell.editable) {
             return;
         }
 
-        this.props.changeSquareValue(cell.x, cell.y, newValue, board);
+        if (pencilMode) {
+            this.props.changeSquareNotes(cell.x, cell.y, newValue, board);
+        } else {
+            this.props.changeSquareValue(cell.x, cell.y, newValue, board);
+        }
     }
 
     isValid = (val) => {
@@ -126,18 +131,23 @@ class Cell extends Component {
                 onKeyUp={this.onKeyPress} 
                 tabIndex={cell.x * cell.y}
             >
-                <span className={classes.input}>{cell.value}</span>
+                {cell.notes ? (
+                    <CellNotes cell={cell} />
+                ) : (
+                    <span className={classes.input}>{cell.value}</span>
+                )}
             </div>
         )
     }
 }
 
 const mapStateToProps = (state) => {
-    const { selected } = state.sudoku.present;
+    const { selected, pencilMode } = state.sudoku.present;
 
     return {
-        selected
+        selected,
+        pencilMode
     };
 }
 
-export default withStyles(styles)(connect(mapStateToProps, { changeSquareValue, selectSquare })(Cell));
+export default withStyles(styles)(connect(mapStateToProps, { changeSquareValue, changeSquareNotes, selectSquare })(Cell));

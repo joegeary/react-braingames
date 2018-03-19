@@ -10,7 +10,8 @@ import {
     SUDOKU_REDO,
     SUDOKU_CLEAR_HISTORY,
     SUDOKU_USE_HINT,
-    SUDOKU_HINTS
+    SUDOKU_HINTS,
+    SUDOKU_TOGGLE_PENCIL_MODE
 } from '../constants/actions';
 
 const INITIAL_STATE = {
@@ -18,7 +19,8 @@ const INITIAL_STATE = {
     showNewGameMenu: false,
     hints: SUDOKU_HINTS,
     board: [],
-    selected: undefined
+    selected: undefined,
+    pencilMode: false
 };
 
 const sudoku = (state = INITIAL_STATE, action) => {
@@ -60,6 +62,12 @@ const sudoku = (state = INITIAL_STATE, action) => {
                 ...state,
                 board: action.newBoard,
                 hints: state.hints - 1
+            }
+
+        case SUDOKU_TOGGLE_PENCIL_MODE:
+            return {
+                ...state,
+                pencilMode: !state.pencilMode
             }
             
         default:
