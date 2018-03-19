@@ -10,12 +10,19 @@ import {
     SUDOKU_REDO, 
     SUDOKU_CLEAR_HISTORY,
     SUDOKU_TOGGLE_NEW_GAME_MENU,
-    SUDOKU_USE_HINT
+    SUDOKU_USE_HINT,
+    SUDOKU_TOGGLE_PENCIL_MODE
 } from '../constants/actions';
 
 export const toggleNewGameMenu = () => {
     return {
         type: SUDOKU_TOGGLE_NEW_GAME_MENU
+    }
+}
+
+export const togglePencilMode = () => {
+    return {
+        type: SUDOKU_TOGGLE_PENCIL_MODE
     }
 }
 
@@ -59,6 +66,7 @@ export const solveGame = (board) => {
         row.forEach(cell => {
             if (cell.editable) {
                 cell.value = '';
+                cell.notes = undefined;
             }
         });
     });
@@ -73,7 +81,9 @@ export const solveGame = (board) => {
 
 export const changeSquareValue = (x, y, value, board) => {
     const newBoard = JSON.parse(JSON.stringify(board));
+
     newBoard[x][y].value = value === '' || value === '0' ? '' : ~~value;
+    newBoard[x][y].notes = undefined;
 
     validateBoard(newBoard);
 
@@ -81,6 +91,33 @@ export const changeSquareValue = (x, y, value, board) => {
         type: SUDOKU_SQUARE_CHANGE,
         newBoard
     };
+}
+
+export const changeSquareNotes = (x, y, value, board) => {
+    const newBoard = JSON.parse(JSON.stringify(board));
+    const cell = newBoard[x][y];
+
+    if (cell.notes === undefined) {
+        cell.notes = {
+            '1': false,
+            '2': false,
+            '3': false,
+            '4': false,
+            '5': false,
+            '6': false,
+            '7': false,
+            '8': false,
+            '9': false
+        }
+    }
+
+    cell.notes[value] = !cell.notes[value];
+    cell.value = undefined;
+
+    return {
+        type: SUDOKU_SQUARE_CHANGE,
+        newBoard
+    }
 }
 
 export const selectSquare = (cell) => {

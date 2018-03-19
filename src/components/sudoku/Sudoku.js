@@ -17,7 +17,7 @@ import Board from './Board';
 import OptionsMenu from './OptionsMenu';
 import NewGameMenu from './NewGameMenu';
 
-import { startGame, undoMove, useHint, clearHistory } from '../../actions/sudoku';
+import { startGame, undoMove, useHint, clearHistory, togglePencilMode } from '../../actions/sudoku';
 import { startTimer, resetTimer } from '../../actions/stopwatch';
 
 const styles = {
@@ -51,6 +51,7 @@ class Sodoku extends Component {
         
         this.onUndoClick = this.onUndoClick.bind(this);
         this.handleUseHint = this.handleUseHint.bind(this);
+        this.onPencilModeClick = this.onPencilModeClick.bind(this);
     }
 
     componentDidMount() {
@@ -65,8 +66,8 @@ class Sodoku extends Component {
         this.props.undoMove();
     }
 
-    onRedoClick() {
-        this.props.redoMove();
+    onPencilModeClick() {
+        this.props.togglePencilMode();
     }
 
     handleUseHint() {
@@ -75,7 +76,7 @@ class Sodoku extends Component {
     }
 
     render() {
-        const { classes, difficulty, hints, canUndo } = this.props;
+        const { classes, difficulty, pencilMode, hints, canUndo } = this.props;
 
         const appBarLeft = (
             <IconButton component={Link} to="/">
@@ -106,9 +107,9 @@ class Sodoku extends Component {
                                 <UndoIcon /> Undo
                             </span>
                         </Button>
-                        <Button>
+                        <Button onClick={this.onPencilModeClick}>
                             <span className={classes.buttonWrapper}>
-                                <ModeEditIcon /> Pencil
+                                <ModeEditIcon color={pencilMode ? 'primary' : 'action'} /> Pencil
                             </span>
                         </Button>
                         <Button onClick={this.handleUseHint} disabled={hints===0}>
@@ -128,10 +129,11 @@ class Sodoku extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const { difficulty, board, hints } = state.sudoku.present;
+    const { difficulty, pencilMode, board, hints } = state.sudoku.present;
 
     return {
         difficulty,
+        pencilMode,
         hints,
         board,
         canUndo: state.sudoku.past.length > 0
@@ -144,5 +146,6 @@ export default connect(mapStateToProps, {
     useHint,
     clearHistory,
     startTimer,
-    resetTimer
+    resetTimer,
+    togglePencilMode
 })(withStyles(styles)(Sodoku));
