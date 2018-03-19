@@ -8,6 +8,7 @@ import ViewContainer from '../layout/ViewContainer';
 import LayoutAppBar from '../layout/LayoutAppBar';
 import ScrollView from '../layout/ScrollView';
 import LayoutBody from '../layout/LayoutBody';
+import SearchBar from '../SearchBar';
 import GameCard from './GameCard';
 import allGames from '../../games';
 
@@ -25,6 +26,13 @@ class GameList extends Component {
 
         this.props.history.push('/?' + stringify(qs));
     };
+
+    handleSearchSubmit = (value) => {
+        var qs = this.getQueryParams();
+        qs.search = value;
+
+        this.props.history.push('/?' + stringify(qs));
+    }
 
     getQueryParams() {
         const { location } = this.props;
@@ -44,18 +52,36 @@ class GameList extends Component {
         return 'all'
     }
 
-    getFilteredGames(selectedCategory) {
-        return allGames.filter(game => game.category === selectedCategory || selectedCategory === 'all' || (selectedCategory === 'favorites' && game.favorite));
+    getFilteredGames(selectedCategory, searchText) {
+        return allGames.filter(game => 
+            game.category === selectedCategory 
+            || selectedCategory === 'all' 
+            || (selectedCategory === 'favorites' && game.favorite)
+        ).filter(game => 
+            !searchText 
+            || game.title.toLowerCase().includes(searchText.toLowerCase())
+        );
     }
 
     render() {
         const queryParams = this.getQueryParams();
         const categories = this.getCategories();
         const selectedCategory = this.getSelectedCategory(queryParams, categories);
-        const filteredGames = this.getFilteredGames(selectedCategory);        
+        const filteredGames = this.getFilteredGames(selectedCategory, queryParams.search);        
 
         const appBarRight = (
             <IconButton><AccountCircleIcon /></IconButton>
+        );
+
+        const appBarCenter = (
+            <SearchBar
+                onChange={this.handleSearchSubmit}
+                onRequestSearch={this.handleSearchSubmit}
+                value={queryParams.search}
+                style={{
+                    maxWidth: 800
+                }}
+            />
         );
 
         return (
@@ -63,6 +89,7 @@ class GameList extends Component {
                 <LayoutAppBar
                     title="React Brain Games"
                     iconElementRight={appBarRight}
+                    elementCenter={appBarCenter}
                 />
                 <AppBar position="static" color="default">
                 <Tabs
@@ -72,7 +99,7 @@ class GameList extends Component {
                 >
                     <Tab label="All Games" value="all" />
                     {categories.map(category => (
-                        <Tab label={category} value={category} />
+                        <Tab label={category} value={category} key={category} />
                     ))}
                     <Tab label="Favorites" value="favorites" />
                 </Tabs>
