@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Grid, IconButton, Tab, Tabs, AppBar } from 'material-ui-next';
 import AccountCircleIcon from 'material-ui-icons-next/AccountCircle';
 
-import ViewContainer from './layout/ViewContainer';
-import LayoutAppBar from './layout/LayoutAppBar';
-import ScrollView from './layout/ScrollView';
-import LayoutBody from './layout/LayoutBody';
+import ViewContainer from '../layout/ViewContainer';
+import LayoutAppBar from '../layout/LayoutAppBar';
+import ScrollView from '../layout/ScrollView';
+import LayoutBody from '../layout/LayoutBody';
 import GameCard from './GameCard';
-import allGames from '../games';
+import allGames from '../../games';
 
 const styles = {
     content: {

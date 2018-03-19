@@ -4,13 +4,13 @@ import ReactMarkdown from 'react-markdown';
 import { IconButton } from 'material-ui-next';
 import ArrowBackIcon from 'material-ui-icons-next/ArrowBack';
 
-import ViewContainer from './layout/ViewContainer';
-import LayoutAppBar from './layout/LayoutAppBar';
-import LayoutBody from './layout/LayoutBody';
+import ViewContainer from '../layout/ViewContainer';
+import LayoutAppBar from '../layout/LayoutAppBar';
+import LayoutBody from '../layout/LayoutBody';
 
-import games from '../games';
+import games from '../../games';
 
-const Rules = ({ match }) => {
+const GameRules = ({ match }) => {
     const key = match.params.game;
     const game = games.filter(g => g.key === key)[0];
 
@@ -33,4 +33,4 @@ const Rules = ({ match }) => {
     );
 }
 
-export default Rules;
+export default GameRules;
